@@ -40,6 +40,5 @@ function addTask() {
     // 入力フィールドをクリア
     document.getElementById('new-task').value = "";
   }
-  
   // ボタンがクリックされたときにタスクを追加
   document.getElementById('add-task-btn').addEventListener('click', addTask);
