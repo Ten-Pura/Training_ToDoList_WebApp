@@ -1,0 +1,15 @@
+{
+  "name": "training_todolist_webapp",
+  "version": "1.0.0",
+  "description": "This repository is for Training of making a WebApplication with HTML, CSS, JavaSctipt and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
