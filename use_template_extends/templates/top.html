@@ -1,0 +1,27 @@
+<!-- 「base.html」を継承 -->
+ {% extends "base.html" %}
+
+ <!-- タイトルブロックを書き換える -->
+  {% block title %}
+  掲示板のトップページ
+  {% endblock %}
+
+<!-- ヘッターブロックを書き換える -->
+ {% block header %}
+    <!-- login_user_nameの値に応じた条件分岐 -->
+    {% if login_user_name %}
+        掲示板のトップページ - {{login_user_name}}さん
+    {% else %}
+        掲示板のトップページ - ゲストさん
+    {% endif %}
+ {% endblock %}
+
+<!-- コンテンツを書き換える -->
+ {% block contents %}
+    {% for message in message_list %}
+        <article>
+            <p>{{message.id}} - {{message.user_name}} </p>
+            <p>{{message.contents}}</p>
+        </article>
+    {% endfor %}
+ {% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        <!-- ここにタイトルが入る-->
+         {% endblock %}
+    </title>
+</head>
+
+<body>
+    <header>
+        <!--「login_user_name」の値に応じた条件武器-->
+        <h1>
+            {% block header %}
+            {% endblock %}
+        </h1>
+        <!-- メニュー-->
+         <nav>
+            <ul>
+                <li>
+                    <a href="{{url_for('index')}}">トップページ</a>
+                </li>
+                <li>
+                    <a href="{{url_for('write')}}">書き込みページ</a>
+                </li>
+            </ul>
+         </nav>
+    </header>
+
+    <main>
+        {% block contents %}
+        <!-- ここにコンテンツが入る-->
+        まだ何もコンテンツがありません。
+        {% endblock %}
+    </main>
+</body>
+
+</html>
