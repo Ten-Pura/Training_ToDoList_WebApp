@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>掲示板のトップページ</title>
+</head>
+
+<body>
+    <header>
+        <!--「login_user_name」変数の値で差し替え -->
+        <h1>掲示板のトップページ - {{login_user_name}}さん</h1>
+        <!-- メニュー-->
+         <nav>
+            <ul>
+                <li>
+                    <a href="{{url_for('index')}}">トップページ</a>
+                </li>
+                <li>
+                    <a href="{{url_for('write')}}">書き込みページ</a>
+                </li>
+                <li>
+                    <a href="{{url_for('edit', message_id=123)}}">編集ページ</a>
+                </li>
+            </ul>
+         </nav>
+    </header>
+</body>
+
+</html>
