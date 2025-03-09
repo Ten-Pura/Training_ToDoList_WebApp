@@ -19,7 +19,7 @@ login_manager.init_app(app)
 
 #ユーザーモデルの作成
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primmary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(25))
 
@@ -43,29 +43,37 @@ def set_login_user_name():
 #アカウント登録
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == ["GET"]:
+    if request.method == "GET":
         return render_template("signup.html")
-    elif request.method == ["POST"]:
+    elif request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         #ユーザーインスタンスを作成
         user = User(username=username, password=generate_password_hash(password))
-        db.session.add()
+        db.session.add(user)
         db.session.commit()
         return redirect("login")
     
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == ["GET"]:
+    if request.method == "GET":
         return render_template("login.html")
-    elif request.method == ["POST"]:
+    elif request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         #Userテーブルからusernameに一致するユーザーを取得する
         user = User.query.filter_by(username=username).first()
-        if check_password_hash(password, user.password):
+        print(user.password)
+        if check_password_hash(user.password, password):
             login_user(user)
             return redirect("/")
+        else:
+            return redirect("/login")
+        
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route("/")
 def index():

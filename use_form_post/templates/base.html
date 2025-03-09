@@ -22,13 +22,27 @@
          <nav>
             <ul>
                 <li>
-                    <!-- 「/」にアクセスするURLを作成 -->
                     <a href="{{url_for('index')}}">トップページ</a>
                 </li>
-                <li>
-                    <!-- 「/write」にアクセスするURLを作成 -->
-                    <a href="{{url_for('write')}}">書き込みページ</a>
-                </li>
+                <!-- ログイン済み -->
+                {% if login_user_name %}
+                    <li>
+                        <a href="{{url_for('write')}}">書き込みページ</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('logout')}}">ログアウト</a>
+                    </li>
+                {% endif %}
+
+                {% if not login_user_name %}
+                    <li>
+                        <a href="{{url_for('signup')}}">サインアップ</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('login')}}">ログイン</a>
+                    </li>
+                {% endif %}
+
             </ul>
          </nav>
     </header>
