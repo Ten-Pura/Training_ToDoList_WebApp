@@ -1,0 +1,34 @@
+<!-- base.htmlを継承 -->
+ {% extends "base.html" %}
+
+ <!-- タイトルブロックを書き換える -->
+  {% block title %}
+  掲示板のトップページ
+  {% endblock %}
+
+  <!-- ヘッダーブロックを書き換える -->
+{% block header %}
+    {% if login_user_name %}
+        掲示板のトップページ - {{login_user_name}}さん
+    {% else %}
+        掲示板のトップページ - ゲストさん
+    {% endif %}
+{% endblock %}
+
+{% block contents %}
+<!-- 検索ワードを送信するフォームを定義 -->
+ <sectiion>
+    <form action="{{url_for('index')}}" method="GET">
+        <input type="search" name="search_word" value="{{search_word}}"></label>
+        <input type="submit" value-"検索">
+    </form>
+ </sectiion>
+ <section>
+    {% for message in message_list %}
+        <article>
+            <p>{{message.id}} - {{message.name}}</p>
+            <p>{{message.contents}}</p>
+        </article>
+    {% endfor %}
+</sectiion>
+{% endblock %}
