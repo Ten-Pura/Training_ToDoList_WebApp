@@ -21,13 +21,11 @@ def index():
 @socketio.on('load messages')
 def load_messages():
     messages = messages_collection.find().sort("_id", -1).limit(10)
-    print("動いている_その1")
     messages = list(messages)[::-1]
-    print(len(messages))
-    #messages_return = [message['message'] for message in messages]
-    #print("動いている＿その1")
+    messages_return = [message['message'] for message in messages]
+    print("動いている＿＿＿＿＿だいだい")
     #メッセージをクライアントへ送信
-    #emit('load all messages', messages_return)
+    emit('load all messages', messages_return)
 
 
 @socketio.on('send message')
