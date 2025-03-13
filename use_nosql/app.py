@@ -3,13 +3,13 @@ from flask_socketio import SocketIO, emit
 from datetime import datetime
 from pymongo import MongoClient
 
-app: Flask = Flask(__name__)
+app = Flask(__name__)
 
-#Socket.ioのセットアップ
+# Socket.ioのセットアップ --- (※1)
 socketio = SocketIO(app)
 
-#MongoDBの接続設定
-mongo_uri = "mongodb+srv://taichi1166:<db_password>@cluster0.jslmr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# MongoDBの接続先設定 --- (※2)
+mongo_uri = "mongodb+srv://taichi1166:Ofi33553@cluster0.jslmr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(mongo_uri)
 db = client["SNS"]
 messages_collection = db["messages"]
@@ -18,24 +18,23 @@ messages_collection = db["messages"]
 def index():
     return render_template("index.html")
 
+# メッセージの読み込み --- (※3)
 @socketio.on('load messages')
 def load_messages():
-    messages = messages_collection.find().sort("_id", -1).limit(10)
+    messages = messages_collection.find().sort('_id', -1).limit(10)
     messages = list(messages)[::-1]
     messages_return = [message['message'] for message in messages]
-    print("動いている＿＿＿＿＿だいだい")
-    #メッセージをクライアントへ送信
+    # メッセージをクライアントへ送信 --- (※4)
     emit('load all messages', messages_return)
 
-
+# メッセージの登録 --- (※5)
 @socketio.on('send message')
 def send_message(message):
-    print("Send＿Message動いているその1")
     messages_collection.insert_one({'message': message})
-    print("動いている＿その2")
-    #メッセージをクライアントへ送信
+    # メッセージをクライアントへ送信 --- (※6)
     emit('load one message', message, broadcast=True)
 
+
 if __name__ == "__main__":
-    #socket.ioサーバーの起動
+    # Socket.ioサーバーの起動 --- (※7)
     socketio.run(app, debug=True)
