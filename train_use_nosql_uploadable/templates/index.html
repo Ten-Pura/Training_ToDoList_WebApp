@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>画像掲示板</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                <!--SocketIOのセットアップ-->
+                const socket = io();
+
+                let connection = false;
+
+                const message = document.getElementById("message");
+                const img_file= document.getElementById("img_file");
+                
+                socket.on("connect", () => {
+                    connection = true;
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>ここは画像掲示板です。</h1>
+        <input type="file" id="img_file">
+        <button id="send_img_file">送信</button>
+    </body>
+</html>
