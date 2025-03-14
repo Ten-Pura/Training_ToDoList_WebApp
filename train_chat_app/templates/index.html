@@ -22,8 +22,10 @@
                 socket.on("load all chat channnels", chat_channel_list => {
                     chat_channel_list.forEach(element => {
                         let li = document.createElement("li");
-                        let link = document.createElement
-                        li.append(element.name);
+                        let link = document.createElement("a");
+                        link.href = element.url;
+                        link.textContent = element.name;
+                        li.appendChild(link);
                         ChatChannel.append(li);
                     });
                 });
