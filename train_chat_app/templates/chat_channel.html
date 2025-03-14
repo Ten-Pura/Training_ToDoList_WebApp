@@ -1,0 +1,73 @@
+<!-- base.htmlを継承 -->
+{% extends "base.html" %}
+
+<!-- タイトルブロックを書き換える -->
+ {% block title %}
+ Channel_{{chat_channel}}
+ {% endblock %}
+
+ <!-- ヘッダーブロックを書き換える -->
+{% block header %}
+Channel_{{chat_channel}}
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /*SocketIOのセットアップ*/
+            const socket = io();
+            socket.on("connect", () => {
+                socket.emit("call all chats");
+            });
+
+            const Messages = document.getElementById("Messages");
+            const ChatButton = document.getElementById("ChatButton");
+            const InputMessage = document.getElementById("InputMessage")
+
+            socket.on("load all chats", messages => {
+                Messages.innerHTML = "";
+                messages.forEach(element => {
+                    let p1 = document.createElement("p");
+                    let p2 = document.createElement("p");
+                    p1.append(element.message);
+                    p2.append(element.name);
+                    p2.append(" ");
+                    p2.append(element.datetime);
+                    Messages.appendChild(p1);
+                    Messages.appendChild(p2);
+                });
+            });
+
+            ChatButton.addEventListener("click", () => {
+                let record = Object();
+                record.message = InputMessage.value;
+                record.name = "Yokomizo";
+                socket.emit("send chat", record);
+                InputMessage.value = "";
+            });
+
+            socket.on("load last chat", record => {
+                let p1 = document.createElement("p");
+                let p2 = document.createElement("p");
+                p1.append(record.message);
+                p2.append(record.name);
+                p2.append(" ");
+                p2.append(record.datetime);
+                Messages.appendChild(p1);
+                Messages.appendChild(p2);
+            });
+        });
+</script>
+{% endblock %}
+
+
+{% block contents %}
+<section>
+       <article id="Messages"></article>
+</sectiion>
+<sectiion>
+    <textarea id="InputMessage"></textarea>
+    <input type="button" id="ChatButton" value="chat">
+ </sectiion>
+{% endblock %}

@@ -20,6 +20,7 @@
 
                 /*chat channelの読み込み*/
                 socket.on("load all chat channnels", chat_channel_list => {
+                    ChatChannel.innerHTML = "";
                     chat_channel_list.forEach(element => {
                         let li = document.createElement("li");
                         let link = document.createElement("a");
@@ -36,7 +37,7 @@
 <body>
     <header>
         <!--「login_user_name」の値に応じた条件武器-->
-        <h1></h1>
+        <h1>Chat peaple</h1>
         <!-- メニュー-->
          <nav>
             <ul>
@@ -49,6 +50,7 @@
     </header>
 
     <sectiion>
+        <h3>chat channels</h3>
         <ul id="ChatChannel"></ul>
     </sectiion>
 </body>
