@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        <!-- ここにタイトルが入る-->
+         {% endblock %}
+    </title>
+    {% block script %}
+        <!-- ここにJacaScriptが入る -->
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <!--「login_user_name」の値に応じた条件武器-->
+        <h1>
+            {% block header %}
+            <!-- ここにヘッターを表示する -->
+            {% endblock %}
+        </h1>
+        <!-- メニュー-->
+         <nav>
+            <ul>
+                <li>
+                    <!-- 「/」にアクセスするURLを作成 -->
+                    <a href="{{url_for('index')}}">トップページ</a>
+                </li>
+            </ul>
+         </nav>
+    </header>
+
+    {% block contents %}
+    <!-- ここにコンテンツが入る-->
+    まだ何もコンテンツがありません。
+    {% endblock %}
+</body>
+
+</html>
