@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>画像掲示板</title>
+        <a href="{{url_for('show_picture')}}">画像表示ページ</a>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
@@ -10,6 +11,7 @@
                 const socket = io();
 
                 const message = document.getElementById("message");
+                const ImageData = document.getElementById("ImageData")
                 const file_Input= document.getElementById("file_Input");
                 const sendButton = document.getElementById("send_file")
                 const flg_conn= document.getElementById("flg_conn");
@@ -19,18 +21,19 @@
                     flg_conn.textContent = "connected";
                 });
 
-                /**/
+                /*バックエンドに画像を送信*/
                 sendButton.addEventListener('click', () => {
-                    var data = file_Input.files[0];
+                    var file = file_Input.files[0];
                     var reader = new FileReader();
                     var image = new Image();
 
-                    reader.onload = function(event){
-                        alert("ファイルを読み込みました。");
-                        image.onload = function(){
-                            alert("画像イメージを読み込みました。");
-                        };
+                    reader.onload = function(event) {
+                        socket.emit("send img data", event.target.result);
                     };
+                    reader.readAsDataURL(file);
+                    file_Input.value = "";
+
+                    return false;
                 });
 
             });
@@ -40,6 +43,7 @@
     <body>
         <h1>ここは画像掲示板です。</h1>
         <h5 id="flg_conn"></h5>
+        <ul id="ImageData"></ul>
         <input type="file" id="file_Input">
         <button id="send_file">送信</button>
     </body>

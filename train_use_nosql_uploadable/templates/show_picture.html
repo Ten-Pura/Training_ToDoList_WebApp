@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>画像掲示板</title>
+        <a href="{{url_for('index')}}">トップページ</a>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                /*SocketIOのセットアップ*/
+                const socket = io();
+
+                const Picture = document.getElementById("Picture");
+                const NextButton = document.getElementById("NextButton");
+                const flg_conn= document.getElementById("flg_conn");
+                
+                let PicIndex = 0;
+
+                /*バックエンドとの通信確保*/
+                socket.on("connect", () => {
+                    flg_conn.textContent = "connected";
+                    socket.emit("call picture", PicIndex);
+                });
+
+                /*画像の読み込み*/
+                socket.on("read picture", data => {
+                    let img = document.createElement('img');
+                    img.src = "data:image/jpeg;base64," + data;
+                    Picture.innerHTML = "";
+                    Picture.appendChild(img);
+                });
+
+                /*NextButtonで次の画像を呼び出し*/
+                NextButton.addEventListener("click", () => {
+                    PicIndex++
+                    socket.emit("call picture", PicIndex);
+                });
+
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>ここは画像掲示板です。</h1>
+        <h5 id="flg_conn"></h5>
+        <ul id="Picture"></ul>
+        <button id="NextButton">次の画像</button>
+    </body>
+</html>
