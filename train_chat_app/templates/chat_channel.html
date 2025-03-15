@@ -12,13 +12,18 @@ Channel_{{chat_channel}}
 {% endblock %}
 
 {% block script %}
+<div id="chat_channel" chat_channel={{chat_channel}}></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
 <script>
         document.addEventListener('DOMContentLoaded', () => {
+            /*チャンネルIDの取得*/
+            const tmp = document.getElementById("chat_channel");
+            const chat_channel = tmp.getAttribute("chat_channel");
+            
             /*SocketIOのセットアップ*/
             const socket = io();
             socket.on("connect", () => {
-                socket.emit("call all chats");
+                socket.emit("call all chats", chat_channel);
             });
 
             const Messages = document.getElementById("Messages");
@@ -42,7 +47,8 @@ Channel_{{chat_channel}}
             ChatButton.addEventListener("click", () => {
                 let record = Object();
                 record.message = InputMessage.value;
-                record.name = "Yokomizo";
+                record.name    = "Yokomizo";
+                record.channel = chat_channel;
                 socket.emit("send chat", record);
                 InputMessage.value = "";
             });
