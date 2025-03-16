@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <title>Calendar App</title>
+    </head>
+    <body class="m-5">
+        <!-- カレンダーのヘッダー部分 -->
+        <section class="hero is-info"><div class="hero-body">
+            <p class="title is-3">{{ year }}年{{ month }}月</p>
+            <p class="subtitle is-6">予定をクリックすると編集できます</p>
+        </div></section>
+        <div class="m-1 has-text-right is-size-7">
+            <a href="{{ prev_link }}" class="tag is-info">←前月</a>
+            <a href="{{ next_link }}" class="tag is-info">翌月→</a>
+        </div>
+
+        <!-- カレンダーの日付 -->
+        <div id="calendar">
+            <table class="table is-bordered is-fullwidth">
+                <style>td {border:1px solid #aaa; width:3em; text-align:center;}</style>
+                {% for cols in weeks %}
+                <tr>
+                    {% for d in cols %}
+                    {% set key = "{:4}-{:2}-{:2}".format(year, month, d) %}
+                    <td class="cell" data-d="{{'%02d' % d}}"
+                        data-e="{{ events[key] }}">
+                        {% if d %}
+                            <div class="day">{{ d }}</div>
+                            {% if events[key] %}
+                                <div><sapn class="is-size-7 has-background-info">
+                                    <!-- 予定の長さが20文字以上なら省略 -->
+                                     {{ events[key]|truncate(20) }}
+                                </sapn></div>
+                            {% else %}
+                                <div class="is-size-7"><br></div>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- イベントを追加するフォーム -->
+         <div id="form" class="m-5 card is-hidden">
+            <div class="card-header">
+                <p class="card-header-title">スケジュール編集</p>
+            </div>
+            <div class="card-content">
+                <form action="/" method="POST">
+                    <div class="field">
+                        <label class="label" for="date">日付</label>
+                        <div class="control">
+                            <input id="date" class="input" type="date" name="date">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="event">イベント</label>
+                        <textarea id="event" name="event" class="textarea"></textarea>
+                    </div>
+                    <input type="submit" value="保存" class="button is-primaly">
+                </form>
+            </div>
+         </div>
+    
+    <script>
+    //JavaScriptでクリックした日付をフォームに自動設定する
+    const q  = (selector) => document.querySelector(selector);
+    const ym = '{{ year }}-{{ "%02d" % month }}-';
+    for (let e of document.querySelectorAll('.cell')) {
+        e.addEventListener("click", () => {
+            if (e.dataset.d == "00") return;
+            q("#form").classList.remove("is-hidden");
+            q("#date").value = ym = e.dataset.d;
+            q("#event").value = e.dataset.e
+            q("#event").focus()
+        });
+    }
+    </script>
+
+    </body>
+</html>
