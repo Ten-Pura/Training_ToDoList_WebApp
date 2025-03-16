@@ -1,0 +1,19 @@
+{%extends "base.html"%}
+
+{% block contents %}
+<div class="card p-3">
+    <form method="POST">
+        <p>ID:{{it.id}}</p>
+        <label class="label" for="title">タイトル：</label>
+        <input id="title" name="title" type="text" value="{{ it.title }}" class="input">
+        <label class="label" for="body">本文：</label>
+        <textarea id="body" name="body" class="textarea">{{ it.body }}</textarea>
+        <input type="submit" value="保存" class="button it-primary">
+    </form>
+</div>
+<div class="card p-1">
+    {% if it.id %}
+    <button class="button is-danger" onclick="location.href='/memo/{{it.id}}/delete'">メモを削除</button>
+    {% endif %}
+</div>
+{% endblock %}
