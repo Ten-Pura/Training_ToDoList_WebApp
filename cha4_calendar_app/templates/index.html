@@ -75,7 +75,7 @@
         e.addEventListener("click", () => {
             if (e.dataset.d == "00") return;
             q("#form").classList.remove("is-hidden");
-            q("#date").value = ym = e.dataset.d;
+            q("#date").value = ym + e.dataset.d;
             q("#event").value = e.dataset.e
             q("#event").focus()
         });
