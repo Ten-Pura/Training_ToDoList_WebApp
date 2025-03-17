@@ -24,7 +24,7 @@
                 {% for cols in weeks %}
                 <tr>
                     {% for d in cols %}
-                    {% set key = "{:4}-{:2}-{:2}".format(year, month, d) %}
+                    {% set key = "%04d-%02d-%02d" % (year, month, d) %}
                     <td class="cell" data-d="{{'%02d' % d}}"
                         data-e="{{ events[key] }}">
                         {% if d %}

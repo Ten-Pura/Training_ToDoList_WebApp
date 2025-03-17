@@ -21,7 +21,7 @@ def index_get():
     year = int(request.args.get("year", now.year))
     month = int(request.args.get("month", now.month))
     # 月曜始まりのカレンダーを作成 --- (※6)
-    cal = calendar.Calendar(calendar.MONDAY)
+    cal = calendar.Calendar(calendar.SUNDAY)
     weeks = cal.monthdayscalendar(year, month)
     # 翌月と前月のリンクを作成 --- (※7)
     next_year = year
