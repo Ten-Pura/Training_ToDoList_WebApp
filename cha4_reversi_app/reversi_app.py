@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request
 import reversi_utils as utils
-import token_chacker as tc
+import token_checker as tc
 
 board = utils.generate_board()
 who = utils.BLACK
@@ -20,7 +20,7 @@ def index():
     if black + white == 64:
         msg = "黒の勝ち" if black > white else "白の勝ち"
     elif black + white >= 6:#初期状態でなければ不正チェック
-        if not check_token(me, token):
+        if not tc.check_token(me, token):
             return "不正なアクセスです。"
     can_place = (who == me)
     return render_template(
@@ -45,7 +45,7 @@ def place(y: int, x: int):
     if utils.can_flip(board, x, y, who):
         utils.flip(board, x, y, who)
         who, me = utils.toggle(who), who
-    return redirect(url_for("index", who=me, token=tc.get_token(me)))
+    return redirect(url_for("index", who=who, token=tc.get_token(who)))
 
 #ゲームをリセットする関数
 @app.route("/reset")
@@ -67,7 +67,7 @@ def skip():
     if not tc.check_token(me, token):
         return "不正なアクセスです。"
     who = utils.toggle(who)
-    return redirect(url_for("index", who=me, token=tc.get_token(me)))
+    return redirect(url_for("index", who=who, token=tc.get_token(who)))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=8888)
