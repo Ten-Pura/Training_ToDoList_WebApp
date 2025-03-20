@@ -26,7 +26,7 @@ def toggle(status: int) -> int:
 
 #位置(x,y)の方向(dx,dy)に石を置けるかどうかを調べる
 def can_flip_dir(board:list[list[int]], x:int, y:int, dx:int, dy:int, who:int) -> bool:
-    if board[x][y] != EMPTY:#石がすでに置いてある
+    if board[y][x] != EMPTY:#石がすでに置いてある
         return False
     if not is_on_board(x+dx, y+dy):#範囲外ならおけない
         return False
@@ -91,18 +91,10 @@ def count_stone_both(board: list[list[int]]) -> tuple[int, int]:
     return count_stone(board, BLACK), count_stone(board, WHITE)
 
 if __name__ == "__main__":
-    l = generate_board()
-    l = add_flip_mark(l, 2)
-    m = [[" "*8] for _ in range(8)]
-    for y in range(6):
-        for x in range(6):
-            if    l[y][x] == 1: m[y][x] = "●"
-            elif  l[y][x] == 2: m[y][x] = "○"
-            else: m[y][x] = "□"
-    for i in l:
-        print(i)
-    for i in m:
-        print(i)
-    count = count_stone_both(l)
-    print("Black_stone:", count[0])
-    print("White_stone:", count[1])
+    b = generate_board()
+    TS = ["・", "Ｘ", "Ｏ"]
+    print(". 0  1  2  3  4  5  6  7")
+    for y, row in enumerate(b):
+        print(f"{y} " + " ".join([TS[i] for i in row]))
+    tmp = can_flip(b, 2, 3, BLACK)
+    print(tmp)
